@@ -1,0 +1,5 @@
+---
+- DB_server:
+    name: localhost
+    port: 27017
+    username: "aditya.vasudeva"
