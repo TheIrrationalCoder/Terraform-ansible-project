@@ -1,5 +1,5 @@
 ---
 - DB_server:
-    name: localhost
+    name: host.docker.internal    #49.205.251.26
     port: 27017
     username: "aditya.vasudeva"

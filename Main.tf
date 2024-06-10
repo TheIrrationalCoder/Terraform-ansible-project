@@ -58,6 +58,7 @@ module "webservers" {
   web_server_computer_name = "webserver"
   server_username = "testadmin"
   server_password = "Password1234!"
+  my_public_ip = "49.205.251.26"
 }
 
 ###########
