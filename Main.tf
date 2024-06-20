@@ -12,10 +12,11 @@ provider "azurerm" {
   skip_provider_registration = "true"
 }
 
-# Create the Resource Group -- Add tfvar file for these values***
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
+# Create the Resource Group -- Add tfvar file for optional default values
+module "rg" {
+  source   = "./Modules/RG"
+  resource_group_name = "TAPResourceGroup"
+  resource_group_location = "southindia"
 }
 
 # Create a virtual network within the Azure resource group
@@ -27,6 +28,7 @@ module "vnets" {
   vnet_address_space = ["10.0.0.0/16"]
   subnet_name = "TAPSubnet"
   subnet_address_space = ["10.0.1.0/24"]
+  depends_on = [ module.rg ]
 }
 
 ############################################
@@ -59,6 +61,7 @@ module "webservers" {
   server_username = "testadmin"
   server_password = "Password1234!"
   my_public_ip = "49.205.251.26"
+  depends_on = [ module.rg ]
 }
 
 ###########
@@ -86,4 +89,20 @@ module "dbservers" {
   db_server_computer_name = "dbserver"
   server_username = "testadmin"
   server_password = "Password1234!"
+  my_public_ip = "49.205.251.26"
+  webserver_public_ip = ""
+  depends_on = [ module.rg ]
+}
+
+#######################################################
+# Optional Step: Provision an Azure Container Registry
+# This step is not needed if Docker Hub is used
+#######################################################
+resource "azurerm_container_registry" "acr" {
+  name                = "mycontainerregistrytaproject"
+  resource_group_name = "TAPResourceGroup"
+  location            = "southindia"
+  sku                 = "Basic"
+  admin_enabled       = true
+  depends_on = [ module.rg ]
 }

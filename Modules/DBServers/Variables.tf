@@ -75,3 +75,11 @@ variable "server_password" {
 variable "subnet_id" {
     type = string
 }
+
+variable "my_public_ip" {
+    type = string
+}
+
+variable "webserver_public_ip" {
+    type = string
+}

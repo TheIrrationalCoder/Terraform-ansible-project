@@ -7,22 +7,21 @@
 #""""""""""""""""""""""""""""""""""""""""""""""""
 
 # Define the path of the config file
-from yaml import safe_load
-config_file_path = "/app/files/Config.yaml"
+from configparser import ConfigParser
+config_file_path = "/app/files/inventory.ini"
 
 # Get details from Config file
-with open(config_file_path, "r") as file:
-    config = safe_load(file)
-    server_info = config[0]["DB_server"]
-    server_name = server_info["name"]
-    server_port = server_info["port"]
-    server_user_name = server_info["username"]
-file.close()
-#print(server_name,server_port,server_user_name)
+config_obj = ConfigParser(allow_no_value=True)
+config_obj.read(config_file_path)
+
+server_name = config_obj.items("dbservers")[0][0].split(" ",1)[0]
+#server_port = config_obj.items("dbservers")[0][1].split(" ",1)[1][-5:]
 
 # Connect to the Mongo client
 from pymongo import MongoClient
-client = MongoClient(server_name,server_port)
+uri = "mongodb://" + config_obj["dbuser"]["username"] + ":" + config_obj["dbuser"]["password"] + "@" + server_name
+
+client = MongoClient(uri)
 
 # Create a test database and insert sample documents into a collection
 sample_data_path = "/app/files/SampleData.json"
@@ -52,5 +51,3 @@ html_table = json2html.convert(json=Customers_array)
 html_file = open("/app/output/index.html", "w")
 html_file.write(html_table)
 html_file.close()
-
-

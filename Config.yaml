@@ -1,5 +1,7 @@
 ---
 - DB_server:
-    name: host.docker.internal    #49.205.251.26
+    # name: localhost #when running on local system
+    # name: host.docker.internal #when running thhe docker image locally
+    name: host.docker.internal    
     port: 27017
-    username: "aditya.vasudeva"
+

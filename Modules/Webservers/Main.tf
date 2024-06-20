@@ -1,17 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=3.0.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-  skip_provider_registration = "true"
-}
-
 #Public IP for webserver
 resource "azurerm_public_ip" "webserver_public_ip" {
   name                = var.webserver_public_ip
@@ -48,7 +34,7 @@ resource "azurerm_network_security_rule" "ssh_rule" {
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
-  source_port_range           = "22"
+  source_port_range           = "*"
   destination_port_range      = "*"
   source_address_prefix       = var.my_public_ip
   destination_address_prefix  = "*"

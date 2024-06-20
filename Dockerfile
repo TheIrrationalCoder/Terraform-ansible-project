@@ -7,7 +7,7 @@ RUN mkdir -p /app/files
 WORKDIR /app
 
 COPY Requirements.txt /app/files
-COPY Config.yaml /app/files
+COPY inventory.ini /app/files
 COPY SampleData.json /app/files
 
 RUN pip install --no-cache-dir -r /app/files/Requirements.txt 
